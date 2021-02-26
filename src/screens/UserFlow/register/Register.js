@@ -2,35 +2,10 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Input from 'components/units/Input/Input'
 import AsyncButton from 'components/units/AsyncButton/AsyncButton'
-import { Container, Form, StyleRedirect, StyledError } from './styles'
+import { Container, Form, StyleRedirect } from './styles'
 import PrivacyPolicy from 'components/units/PrivacyPolicy/PrivacyPolicy'
 import Body from 'components/layout/Body/Body'
-
-const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-const PASSWORD_REGEX = /^(?=.*?[A-Z]).{6,}$/
-
-const validateEmail = (email) => EMAIL_REGEX.test(email.toLowerCase())
-const validatePassword = (password) => PASSWORD_REGEX.test(password)
-
-const users = [
-  {
-    email: 'juan@mail.com',
-    password: 'Juan1992'
-  }
-]
-
-const registerUser = (email, password) => {
-  const newUsers = []
-  for (let i = 0; i < users.length; i++) {
-    const user = users[i]
-    if (user.email === email) console.error('this user already exists')
-    else {
-      newUsers.push(email, password)
-      localStorage.setItem('travelfreedom', 'HE ENTRADO!!!!')
-      console.log(`The user ${email} has been successfully registered`)
-    }
-  }
-}
+import { registerUser, validateEmail, validatePassword } from 'utils/helper'
 
 const Register = ({ retrieveUser }) => {
   const [error, setError] = useState('')
@@ -38,7 +13,7 @@ const Register = ({ retrieveUser }) => {
   const [disabled, setIsDisabled] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isEmailError, setIsEmailError] = useState(false)
-  const [isPassError, setIsPassError] = useState(false)
+  const [isPasswordError, setIsPasswordError] = useState(false)
 
   const handleEmailChange = (value) => {
     setEmail(value)
@@ -49,7 +24,7 @@ const Register = ({ retrieveUser }) => {
   const handlePasswordChange = (value) => {
     setPassword(value)
     const isPass = validatePassword(value)
-    setIsPassError(!isPass)
+    setIsPasswordError(!isPass)
   }
 
   const [email, setEmail] = useState('')
@@ -77,18 +52,18 @@ const Register = ({ retrieveUser }) => {
   }
 
   return (
-    <Body title='Registro'>
+    <Body title='Sign up'>
       <Container>
         <Form onSubmit={handleSubmit}>
           <div className='classInput'>
             <label>Email</label>
             <Input
               type='email'
-              placeholder='Introduce tu email'
+              placeholder='Introduce your email'
               value={email}
               onChange={(e) => handleEmailChange(e.target.value)}
               id='emailName'
-              name='emailName'
+              name='email'
               error={isEmailError}
               errorText='Enter a valid email address...'
               disabled={disabled}
@@ -98,26 +73,21 @@ const Register = ({ retrieveUser }) => {
             <label>Password</label>
             <Input
               type='password'
-              placeholder='Introduce tu contraseña'
+              placeholder='Introduce your password'
               value={password}
               onChange={(e) => handlePasswordChange(e.target.value)}
-              id='passName'
-              name='passName'
-              error={isPassError}
-              errorText='The password to contain more than 6 characters and a uppercase letter'
+              id='passwordName'
+              name='password'
+              error={isPasswordError}
+              errorText='The password should contain more than 6 characters and a uppercase letter'
               disabled={disabled}
               minLength={6}
             />
           </div>
           <PrivacyPolicy />
-          {error && (
-            <StyledError>
-              <p>{error}</p>
-            </StyledError>
-          )}
           <AsyncButton
-            text='Registrame'
-            loadingText='Registrando'
+            text='Sign up'
+            loadingText='Loading'
             iconPosition='left'
             type='submit'
             className='orangeGradient'
@@ -127,7 +97,7 @@ const Register = ({ retrieveUser }) => {
             disabled={disabled}
           />
           <StyleRedirect>
-            Tienes una cuenta? <Link to='/login'>Inicia sesión</Link>
+            Already have an account? <Link to='/login'>Sign in</Link>
           </StyleRedirect>
         </Form>
       </Container>
