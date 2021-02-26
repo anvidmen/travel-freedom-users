@@ -9,7 +9,7 @@ import ProtectedRoute from 'components/composed/ProtectedRoute'
 import Home from 'screens/Home/Home'
 
 import Login from 'screens/UserFlow/Login/Login'
-import Registration from 'screens/UserFlow/Registration/Registration'
+import Registration from 'screens/UserFlow/register/Register'
 import RecoverPassword from 'screens/UserFlow/RecoverPassword/RecoverPassword'
 import Profile from 'screens/UserFlow/Profile/Profile'
 
