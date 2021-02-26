@@ -4,6 +4,8 @@ import Input from 'components/units/Input/Input'
 import AsyncButton from 'components/units/AsyncButton/AsyncButton'
 import { ChangePassword, Container, Form, Label, StyleRedirect, StyledError } from './styles'
 import Body from 'components/layout/Body/Body'
+import { firebase, googleAuthProvider, facebookAuthProvider, githubAuthProvider } from '../../../components/firebase/firebase-config';
+
 
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 const PASSWORD_REGEX = /^(?=.*?[A-Z]).{6,}$/
@@ -74,6 +76,26 @@ const Login = ({ onLogin }) => {
       setError(message)
     }
   }
+
+
+  const handleGoogleLogin = () => {
+    firebase.auth().signInWithPopup( googleAuthProvider )
+            .then( ({ user }) => {
+                // dispatch(
+                //     login( user.uid, user.displayName )
+                // )
+                console.log(user)
+            });
+}
+
+// const handleFacebookLogin = () => {
+//     dispatch( startFacebookLogin() );
+// }
+// const handleGitHubLogin = () => {
+//     dispatch( startGitHubLogin() );
+// }
+
+
   return (
     <Body title='Acceso' isLoggedIn={false}>
       <Container>
@@ -112,11 +134,48 @@ const Login = ({ onLogin }) => {
               <Link to='/recover-password/:hash'>Has olvidado tu contraseña?</Link>
             </Label>
           </ChangePassword>
-          {error && (
+          {/* {error && (
             <StyledError>
               <p>{error}</p>
             </StyledError>
-          )}
+          )} */}
+          <div className="auth__social-networks">
+                    <p>Login with social networks</p>
+
+                    <div 
+                        className="google-btn"
+                        onClick={ handleGoogleLogin }
+                    >
+                        <div className="google-icon-wrapper">
+                            <img className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="google button" />
+                        </div>
+                        <p className="btn-text">
+                            <b>Sign in with google</b>
+                        </p>
+                    </div>
+                    <div 
+                        className="google-btn"
+                        // onClick={ handleFacebookLogin }
+                    >
+                        <div className="google-icon-wrapper">
+                            <img className="facebook-icon" src="https://img1.freepng.es/20180319/iyw/kisspng-facebook-logo-social-media-computer-icons-icon-facebook-drawing-5ab02fb69f99c4.9538101315214959906537.jpg" alt="facebook button" />
+                        </div>
+                        <p className="btn-text">
+                            <b>Sign in with facebook</b>
+                        </p>
+                    </div>
+                    <div 
+                        className="google-btn"
+                        // onClick={ handleGitHubLogin }
+                    >
+                        <div className="google-icon-wrapper">
+                            <img className="github-icon" src="https://cdns.iconmonstr.com/wp-content/assets/preview/2012/240/iconmonstr-github-1.png" alt="github button" />
+                        </div>
+                        <p className="btn-text">
+                            <b>Sign in with github</b>
+                        </p>
+                    </div>
+                </div>
           <AsyncButton
             text='Acceder'
             loadingText='Accediendo'
