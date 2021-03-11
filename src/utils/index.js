@@ -8,6 +8,10 @@ export const redirectHome = () => {
   document.location.href = '/'
 }
 
+export const auth = user => {
+  localStorage.setItem('user', user.email)
+}
+
 export const logout = () => {
   localStorage.removeItem('itacademy')
   refresh()

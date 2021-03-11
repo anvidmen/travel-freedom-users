@@ -1,44 +1,22 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import { authenticateUser, validateEmail, validatePassword } from 'utils/helper'
+
+import Body from 'components/layout/Body/Body'
 import Input from 'components/units/Input/Input'
 import AsyncButton from 'components/units/AsyncButton/AsyncButton'
+
 import { ChangePassword, Container, Form, Label, StyleRedirect, StyledError } from './styles'
-import Body from 'components/layout/Body/Body'
-
-const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-const PASSWORD_REGEX = /^(?=.*?[A-Z]).{6,}$/
-
-const validateEmail = (email) => EMAIL_REGEX.test(email.toLowerCase())
-const validatePassword = (password) => PASSWORD_REGEX.test(password)
-
-const users = [
-  {
-    email: 'juan@mail.com',
-    password: 'Juan1992'
-  }
-]
-
-const authenticateUser = (email, password) => {
-  let authenticated = false
-  for (let i = 0; i < users.length; i++) {
-    const user = users[i]
-    if (user.email === email && user.password === password) {
-      authenticated = true
-      localStorage.setItem('travelfreedom', 'HE ENTRADO!!!!')
-    }
-  }
-  if (authenticated) console.log('the user is correct')
-  else console.error('the user is incorrect')
-}
 
 const Login = ({ onLogin }) => {
   const [error, setError] = useState('')
   const [animatedState, setAnimatedState] = useState(false)
   const [disabled, setIsDisabled] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-
   const [isEmailError, setIsEmailError] = useState(false)
   const [isPassError, setIsPassError] = useState(false)
+
+  const history = useHistory()
 
   const handleEmailChange = (value) => {
     setEmail(value)
@@ -70,6 +48,7 @@ const Login = ({ onLogin }) => {
         if (error) return setError(error.message)
         onLogin(token)
       })
+      history.push('/profile')
     } catch ({ message }) {
       setError(message)
     }
