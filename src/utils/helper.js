@@ -1,3 +1,4 @@
+import { auth } from 'utils/index'
 
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 const PASSWORD_REGEX = /^(?=.*?[A-Z]).{6,}$/
@@ -23,4 +24,17 @@ export const registerUser = (email, password) => {
       console.log(`The user ${email} has been successfully registered`)
     }
   }
+}
+
+export const authenticateUser = (email, password) => {
+  let authenticated = false
+  for (let i = 0; i < users.length; i++) {
+    const user = users[i]
+    if (user.email === email && user.password === password) {
+      authenticated = true
+      auth(user)
+    }
+  }
+  if (authenticated) console.log('the user is correct')
+  else console.error('the user is incorrect')
 }
